@@ -1,44 +1,34 @@
-package app.ifnyas.idp
+package app.ifnyas.idp.view.debug
 
 import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.get
-import coil.ImageLoader
-import coil.load
-import coil.request.ImageRequest
-import coil.request.SuccessResult
+import app.ifnyas.idp.R
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
 import com.google.vr.sdk.widgets.video.VrVideoView
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
-class MainActivity : AppCompatActivity() {
+class DebugActivity : AppCompatActivity() {
 
     private val TAG: String by lazy { javaClass.simpleName }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        setContentView(R.layout.activity_debug)
 
         initFun()
     }
 
     private fun initFun() {
-        //initPics()
-        initVids()
+        initPics()
+        //initVids()
     }
 
     private fun initPics() {

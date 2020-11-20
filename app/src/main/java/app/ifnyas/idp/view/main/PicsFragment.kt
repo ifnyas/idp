@@ -3,7 +3,6 @@ package app.ifnyas.idp.view.main
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.get
@@ -11,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import app.ifnyas.idp.R
 import app.ifnyas.idp.databinding.FragmentPicsBinding
+import app.ifnyas.idp.model.Places
 import app.ifnyas.idp.util.viewBinding
 import app.ifnyas.idp.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
@@ -30,6 +30,18 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     }
 
     private fun initFun() {
+        initVm()
+    }
+
+    private fun initVm() {
+        vm.apply {
+            place.observe(viewLifecycleOwner, {
+                setPanoView(it)
+            })
+        }
+    }
+
+    private fun setPanoView(place: Places?) {
         binding.vrImg.apply {
             val baseFrameLayout = this[0] as ViewGroup
 
@@ -49,8 +61,7 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
 
             // set pic
             //
-            val url =
-                "https://www.indonesia.travel/content/dam/indtravelrevamp/image-360/Taman%20Sari.jpg"
+            val url = place?.image
 
             Glide.with(this).asBitmap().load(url).into(object : CustomTarget<Bitmap>() {
                 override fun onLoadCleared(placeholder: Drawable?) { }

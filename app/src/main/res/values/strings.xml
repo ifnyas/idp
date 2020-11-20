@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">IDP</string>
+
+    <string name="exhandler_title">Maaf</string>
+    <string name="exhandler_msg">Terjadi kesalahan pada sistem</string>
 </resources>

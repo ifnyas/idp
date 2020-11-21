@@ -1,7 +1,9 @@
 package app.ifnyas.idp.view.main
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +79,10 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             btnRandom.setOnClickListener {
                 vm.randomize()
             }
+
+            btnMap.setOnClickListener {
+                openMaps()
+            }
         }
     }
 
@@ -142,5 +148,13 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             layDetails.visibility = if (isLoading) View.GONE else View.VISIBLE
         }
+    }
+
+    private fun openMaps() {
+        val uri = "geo:0,0?q=${vm.place.value?.title}"
+        val gmmIntentUri = Uri.parse(uri)
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+        mapIntent.setPackage("com.google.android.apps.maps")
+        startActivity(mapIntent)
     }
 }

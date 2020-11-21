@@ -5,7 +5,7 @@ import android.os.Looper
 import android.util.Log
 import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.R
-import app.ifnyas.idp.model.Places
+import app.ifnyas.idp.model.Place
 import com.afollestad.materialdialogs.MaterialDialog
 import io.ktor.client.request.*
 
@@ -33,9 +33,9 @@ class ApiRequest {
         Log.d(TAG, "exHandler: $msg")
     }
 
-    suspend fun getPlaces(): List<Places>? {
+    suspend fun getPlaces(): List<Place>? {
         return try {
-            client.get<List<Places>>(path = "places")
+            client.get<List<Place>>(path = "places")
         } catch (e: Exception) {
             exHandler(-1, e, null); null
         }

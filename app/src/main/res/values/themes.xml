@@ -11,11 +11,20 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <item name="android:windowFullscreen">true</item>
         <!-- Customize your theme here. -->
         <item name="android:lineSpacingMultiplier">1.2</item>
     </style>
 
     <style name="SplashTheme" parent="Theme.IDP">
         <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="Material.Round.Borderless.Dark" parent="Widget.MaterialComponents.FloatingActionButton">
+        <item name="backgroundTint">@color/colorDarkTransparent</item>
+        <item name="elevation">0dp</item>
+        <item name="pressedTranslationZ">0dp</item>
+        <item name="borderWidth">0dp</item>
+        <item name="tint">@color/grey_50</item>
     </style>
 </resources>

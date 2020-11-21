@@ -23,8 +23,13 @@ class MainViewModel : ViewModel() {
         viewModelScope.launch {
             isLoading.value = true
             places.value = ApiRequest().getPlaces()
-            place.value = places.value?.random()
-            isLoading.value = false
+            randomize()
         }
+    }
+
+    fun randomize() {
+        isLoading.value = true
+        place.value = places.value?.random()
+        isLoading.value = false
     }
 }

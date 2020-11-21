@@ -15,6 +15,8 @@ import app.ifnyas.idp.model.Place
 import app.ifnyas.idp.util.viewBinding
 import app.ifnyas.idp.viewmodel.MainViewModel
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
@@ -33,20 +35,47 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     private fun initFun() {
         initVm()
         initBtn()
+        initPanoView()
+    }
+
+    private fun initPanoView() {
+        binding.imgPlaceImage.apply {
+            // hide Google VR view
+            //
+            val baseFrameLayout = this[0] as ViewGroup
+
+            // for "Exit fullscreen" button and "About VR View" button
+            val relativeLayout = baseFrameLayout.getChildAt(1) as ViewGroup
+            val exitFullscreenImageButton = relativeLayout.getChildAt(0)
+            val aboutVRViewImageButton = relativeLayout.getChildAt(1)
+            exitFullscreenImageButton.visibility = View.GONE
+            aboutVRViewImageButton.visibility = View.GONE
+
+            // for "Cardboard" button and "Enter fullscreen" button
+            val linearLayout = relativeLayout.getChildAt(2) as ViewGroup
+            val cardboardImageButton = linearLayout.getChildAt(0)
+            val enterFullscreenImageButton = linearLayout.getChildAt(1)
+            cardboardImageButton.visibility = View.GONE
+            enterFullscreenImageButton.visibility = View.GONE
+        }
     }
 
     private fun initBtn() {
         binding.apply {
-            btnFull.setOnClickListener {
-                fullscreenToggle(true)
-            }
-
             btnClear.setOnClickListener {
                 fullscreenToggle(false)
             }
 
             btnBack.setOnClickListener {
                 activity?.onBackPressed()
+            }
+
+            btnFull.setOnClickListener {
+                fullscreenToggle(true)
+            }
+
+            btnRandom.setOnClickListener {
+                vm.randomize()
             }
         }
     }
@@ -72,40 +101,11 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             // start transition
             beginTransition(layRoot)
 
-            // set title
-            textPlaceTitle.text = place?.title
-
-            // set desc
-            textPlaceDesc.text = place?.desc
-
-            // set details
-            layDetails.visibility = View.VISIBLE
-
             // set image
             imgPlaceImage.apply {
-                // hide Google VR view
-                //
-                val baseFrameLayout = this[0] as ViewGroup
-
-                // for "Exit fullscreen" button and "About VR View" button
-                val relativeLayout = baseFrameLayout.getChildAt(1) as ViewGroup
-                val exitFullscreenImageButton = relativeLayout.getChildAt(0)
-                val aboutVRViewImageButton = relativeLayout.getChildAt(1)
-                exitFullscreenImageButton.visibility = View.GONE
-                aboutVRViewImageButton.visibility = View.GONE
-
-                // for "Cardboard" button and "Enter fullscreen" button
-                val linearLayout = relativeLayout.getChildAt(2) as ViewGroup
-                val cardboardImageButton = linearLayout.getChildAt(0)
-                val enterFullscreenImageButton = linearLayout.getChildAt(1)
-                cardboardImageButton.visibility = View.GONE
-                enterFullscreenImageButton.visibility = View.GONE
-
-                // set pic
-                //
                 Glide.with(this)
-                        .asBitmap()
-                        .load(place?.image)
+                        .asBitmap().load(place?.image)
+                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
                         .into(object : CustomTarget<Bitmap>() {
                             override fun onLoadCleared(placeholder: Drawable?) {}
                             override fun onResourceReady(
@@ -116,7 +116,12 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
                                 }
                                 loadImageFromBitmap(resource, options)
                                 visibility = View.VISIBLE
-                                layDetails.visibility = View.VISIBLE
+
+                                // set title
+                                textPlaceTitle.text = place?.title
+
+                                // set desc
+                                textPlaceDesc.text = place?.desc
                             }
                         })
             }

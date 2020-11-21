@@ -1,6 +1,8 @@
 <resources>
     <string name="app_name">IDP</string>
 
-    <string name="exhandler_title">Maaf</string>
+    <string name="exhandler_title">Mohon maaf</string>
     <string name="exhandler_msg">Terjadi kesalahan pada sistem</string>
+
+    <string name="exWeb_msg">Terjadi kesalahan dalam memuat halaman, pastikan koneksi internet aktif</string>
 </resources>

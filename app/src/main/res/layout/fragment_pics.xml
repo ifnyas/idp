@@ -22,6 +22,7 @@
         android:layout_margin="16dp"
         android:src="@drawable/ic_outline_clear_24"
         android:visibility="gone"
+        tools:visibility="visible"
         app:fabSize="mini"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -40,7 +41,8 @@
         android:id="@+id/lay_details"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible">
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <TextView
             android:id="@+id/text_place_title"
@@ -72,6 +74,7 @@
             android:textColor="@color/grey_200"
             app:layout_constraintEnd_toEndOf="@id/text_place_title"
             app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintWidth_percent="0.78"
             app:layout_constraintStart_toStartOf="@id/text_place_title"
             app:layout_constraintTop_toBottomOf="@id/text_place_title"
             tools:text="Lorem ipsum dolor sit amet" />
@@ -87,15 +90,37 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_full"
+            android:id="@+id/btn_ful"
             style="@style/Material.Round.Borderless.Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
-            android:src="@drawable/ic_outline_fullscreen_24"
+            android:src="@drawable/ic_outline_info_24"
             app:fabSize="mini"
             app:layout_constraintBottom_toTopOf="@id/btn_back"
             app:layout_constraintStart_toStartOf="@id/btn_back" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_fu"
+            style="@style/Material.Round.Borderless.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_outline_info_24"
+            app:fabSize="mini"
+            app:layout_constraintEnd_toEndOf="@id/btn_full"
+            app:layout_constraintTop_toTopOf="@id/btn_ful" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_full"
+            style="@style/Material.Round.Borderless.Dark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:src="@drawable/ic_outline_fullscreen_24"
+            app:fabSize="mini"
+            app:layout_constraintBottom_toBottomOf="@id/btn_back"
+            app:layout_constraintStart_toEndOf="@id/btn_back" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/btn_random"

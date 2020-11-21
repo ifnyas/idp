@@ -83,6 +83,10 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             btnMap.setOnClickListener {
                 openMaps()
             }
+
+            btnWeb.setOnClickListener {
+                openWeb()
+            }
         }
     }
 
@@ -156,5 +160,11 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
         val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
         mapIntent.setPackage("com.google.android.apps.maps")
         startActivity(mapIntent)
+    }
+
+    private fun openWeb() {
+        val uri = Uri.parse("https://www.google.com/search?q=${vm.place.value?.title}")
+        val browserIntent = Intent(Intent.ACTION_VIEW, uri)
+        startActivity(browserIntent)
     }
 }

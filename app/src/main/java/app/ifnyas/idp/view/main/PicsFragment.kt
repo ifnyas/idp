@@ -41,7 +41,6 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     private fun initPanoView() {
         binding.imgPlaceImage.apply {
             // hide Google VR view
-            //
             val baseFrameLayout = this[0] as ViewGroup
 
             // for "Exit fullscreen" button and "About VR View" button

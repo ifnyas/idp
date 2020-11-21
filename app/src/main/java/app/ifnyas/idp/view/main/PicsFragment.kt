@@ -9,6 +9,7 @@ import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.transition.TransitionManager
+import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.R
 import app.ifnyas.idp.databinding.FragmentPicsBinding
 import app.ifnyas.idp.model.Place
@@ -84,10 +85,6 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             place.observe(viewLifecycleOwner, {
                 setPlaceView(it)
             })
-
-            isLoading.observe(viewLifecycleOwner, {
-                loadingToggle(it)
-            })
         }
     }
 
@@ -100,6 +97,8 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             // start transition
             beginTransition(layRoot)
 
+            loadingToggle(true)
+
             // set image
             imgPlaceImage.apply {
                 Glide.with(this)
@@ -110,17 +109,19 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
                             override fun onResourceReady(
                                     resource: Bitmap, transition: Transition<in Bitmap>?
                             ) {
+                                // set image
                                 val options = VrPanoramaView.Options().apply {
                                     inputType = VrPanoramaView.Options.TYPE_MONO
                                 }
                                 loadImageFromBitmap(resource, options)
                                 visibility = View.VISIBLE
 
-                                // set title
-                                textPlaceTitle.text = place?.title
+                                // set details
+                                textPlaceTitle.text = fu.htmlToString(place?.title ?: "")
+                                textPlaceDesc.text = fu.htmlToString(place?.desc ?: "")
 
-                                // set desc
-                                textPlaceDesc.text = place?.desc
+                                // end progress
+                                loadingToggle(false)
                             }
                         })
             }
@@ -137,6 +138,7 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
 
     private fun loadingToggle(isLoading: Boolean) {
         binding.apply {
+            beginTransition(layRoot)
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             layDetails.visibility = if (isLoading) View.GONE else View.VISIBLE
         }

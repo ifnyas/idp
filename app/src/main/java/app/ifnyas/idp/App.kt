@@ -4,6 +4,7 @@ import android.app.Application
 import android.content.Context
 import android.content.pm.ApplicationInfo
 import androidx.appcompat.app.AppCompatDelegate
+import app.ifnyas.idp.util.FunUtils
 import com.facebook.stetho.Stetho
 
 
@@ -17,6 +18,7 @@ class App: Application() {
     private fun initFun() {
         // init val
         cxt = applicationContext
+        fu = FunUtils()
 
         // init day/night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -32,5 +34,6 @@ class App: Application() {
 
     companion object {
         lateinit var cxt: Context
+        lateinit var fu: FunUtils
     }
 }

@@ -2,7 +2,6 @@ package app.ifnyas.idp.api
 
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.R
 import app.ifnyas.idp.model.Place
@@ -29,8 +28,6 @@ class ApiRequest {
                 positiveButton(text = "Kembali")
             }
         }
-
-        Log.d(TAG, "exHandler: $msg")
     }
 
     suspend fun getPlaces(): List<Place>? {

@@ -30,24 +30,38 @@ class MainViewModel : ViewModel() {
 
     fun randomize() {
         // get unique random place
-        var newPlaceIndex = getRandomPlaceIndex()
+        var newPlaceIndex = getRandomIndex()
         while (visited.value?.contains(newPlaceIndex) == true)
-            newPlaceIndex = getRandomPlaceIndex()
+            newPlaceIndex = getRandomIndex()
 
         // set new place and store index
-        place.value = places.value?.get(newPlaceIndex)
-        hasVisited(places.value?.indexOf(place.value))
+        setPlace(places.value?.get(newPlaceIndex))
+        hasVisited(getPlaceIndex(place.value))
     }
 
-    private fun getRandomPlaceIndex(): Int {
-        val newPlace = places.value?.random()
-        return places.value?.indexOf(newPlace) ?: -1
+    private fun setPlace(item: Place?) {
+        place.value = item
+    }
+
+    private fun getPlaceIndex(item: Place?): Int {
+        return places.value?.indexOf(item) ?: -1
+    }
+
+    private fun getRandomIndex(): Int {
+        return getPlaceIndex(places.value?.random())
     }
 
     private fun hasVisited(i: Int?) {
         visited.value?.apply {
             if (size.plus(1) == places.value?.size) clear()
-            if (i != null) add(i)
+            if (i != null && !contains(i)) add(i)
+        }
+    }
+
+    fun gridClicked(item: Place) {
+        if (item != place.value) {
+            setPlace(item)
+            hasVisited(getPlaceIndex(item))
         }
     }
 }

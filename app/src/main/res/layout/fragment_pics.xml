@@ -101,12 +101,12 @@
             app:layout_constraintStart_toStartOf="@id/btn_back" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/btn_fu"
+            android:id="@+id/btn_grid"
             style="@style/Material.Round.Borderless.Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:src="@drawable/ic_outline_info_24"
+            android:src="@drawable/ic_outline_view_module_24"
             app:fabSize="mini"
             app:layout_constraintEnd_toEndOf="@id/btn_full"
             app:layout_constraintTop_toTopOf="@id/btn_ful" />

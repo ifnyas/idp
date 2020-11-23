@@ -1,10 +1,15 @@
 package app.ifnyas.idp.viewmodel
 
+import android.app.Activity
+import android.graphics.Bitmap
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.ifnyas.idp.App
 import app.ifnyas.idp.api.ApiRequest
 import app.ifnyas.idp.model.Place
+import com.tarek360.instacapture.Instacapture
+import com.tarek360.instacapture.listener.SimpleScreenCapturingListener
 import kotlinx.coroutines.launch
 
 @Suppress("MemberVisibilityCanBePrivate")
@@ -15,6 +20,7 @@ class MainViewModel : ViewModel() {
     val places: MutableLiveData<List<Place>> by lazy { MutableLiveData<List<Place>>() }
     val place: MutableLiveData<Place> by lazy { MutableLiveData<Place>() }
     val visited: MutableLiveData<MutableList<Int>> by lazy { MutableLiveData<MutableList<Int>>() }
+    val screenshot: MutableLiveData<Bitmap> by lazy { MutableLiveData<Bitmap>() }
 
     init {
         initData()
@@ -63,5 +69,13 @@ class MainViewModel : ViewModel() {
             setPlace(item)
             hasVisited(getPlaceIndex(item))
         }
+    }
+
+    fun shoot() {
+        Instacapture.capture(App.cxt as Activity, object : SimpleScreenCapturingListener() {
+            override fun onCaptureComplete(bitmap: Bitmap) {
+                screenshot.value = bitmap
+            }
+        })
     }
 }

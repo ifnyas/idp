@@ -1,6 +1,5 @@
 package app.ifnyas.idp.view.main
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
@@ -36,8 +35,6 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
-import com.tarek360.instacapture.Instacapture
-import com.tarek360.instacapture.listener.SimpleScreenCapturingListener
 
 class PicsFragment : Fragment(R.layout.fragment_pics) {
 
@@ -119,6 +116,10 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
                 setPlaceView(it)
                 fullscreenDelay()
             })
+
+            screenshot.observe(viewLifecycleOwner, {
+                createShareDialog(it)
+            })
         }
     }
 
@@ -186,16 +187,18 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
 
     private fun openMaps() {
         val uri = "geo:0,0?q=${vm.place.value?.title}"
-        val gmmIntentUri = Uri.parse(uri)
-        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-        mapIntent.setPackage("com.google.android.apps.maps")
-        startActivity(mapIntent)
+        val intentUri = Uri.parse(uri)
+        val intent = Intent(Intent.ACTION_VIEW, intentUri).apply {
+            setPackage("com.google.android.apps.maps")
+        }
+        startActivity(intent)
     }
 
     private fun openWeb() {
-        val uri = Uri.parse("https://www.google.com/search?q=${vm.place.value?.title}")
-        val browserIntent = Intent(Intent.ACTION_VIEW, uri)
-        startActivity(browserIntent)
+        val uri = "https://www.google.com/search?q=${vm.place.value?.title}"
+        val intentUri = Uri.parse(uri)
+        val intent = Intent(Intent.ACTION_VIEW, intentUri)
+        startActivity(intent)
     }
 
     private lateinit var gridDialog: MaterialDialog
@@ -226,26 +229,23 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
         binding.layDetails.visibility = View.INVISIBLE
         binding.btnClear.visibility = View.INVISIBLE
 
-        // get screenshot
-        var bmp: Bitmap? = null
-        Instacapture.capture(cxt as Activity, object : SimpleScreenCapturingListener() {
-            override fun onCaptureComplete(bitmap: Bitmap) {
-                bmp = bitmap
-            }
-        })
-
-        // show dialog
-        Handler(Looper.getMainLooper()).post {
-            MaterialDialog(cxt).show {
-                customView(R.layout.dialog_pics_screenshot)
-                view.apply {
-                    val imageScreenshot = findViewById<AppCompatImageView>(R.id.img_screenshot)
-                        .apply { setImageBitmap(bmp) }
-                }
-            }
-        }
+        // shoot
+        vm.shoot()
 
         // return details
         binding.layDetails.visibility = View.VISIBLE
+    }
+
+    private fun createShareDialog(bmp: Bitmap) {
+        MaterialDialog(cxt).show {
+            customView(
+                    R.layout.dialog_pics_screenshot,
+                    noVerticalPadding = true,
+                    horizontalPadding = true
+            )
+            view.apply {
+                findViewById<AppCompatImageView>(R.id.img_screenshot).apply { setImageBitmap(bmp) }
+            }
+        }
     }
 }

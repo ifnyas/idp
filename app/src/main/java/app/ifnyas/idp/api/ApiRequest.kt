@@ -1,5 +1,6 @@
 package app.ifnyas.idp.api
 
+import android.app.Activity
 import android.os.Handler
 import android.os.Looper
 import app.ifnyas.idp.App.Companion.cxt
@@ -25,7 +26,8 @@ class ApiRequest {
             MaterialDialog(cxt).show {
                 title(R.string.exhandler_title)
                 message(text = "${cxt.getString(R.string.exhandler_msg)}\n\nError $c: $msg}")
-                positiveButton(text = "Kembali")
+                positiveButton(text = "Coba lagi") { (cxt as Activity).recreate() }
+                negativeButton(text = "Kembali")
             }
         }
     }

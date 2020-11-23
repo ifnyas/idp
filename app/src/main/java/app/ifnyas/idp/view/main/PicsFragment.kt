@@ -1,12 +1,16 @@
 package app.ifnyas.idp.view.main
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.get
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -32,6 +36,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
+import com.tarek360.instacapture.Instacapture
+import com.tarek360.instacapture.listener.SimpleScreenCapturingListener
 
 class PicsFragment : Fragment(R.layout.fragment_pics) {
 
@@ -100,6 +106,10 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             btnGrid.setOnClickListener {
                 openGrid()
             }
+
+            btnShoot.setOnClickListener {
+                shootPics()
+            }
         }
     }
 
@@ -107,8 +117,15 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
         vm.apply {
             place.observe(viewLifecycleOwner, {
                 setPlaceView(it)
+                fullscreenDelay()
             })
         }
+    }
+
+    private fun fullscreenDelay() {
+        Handler(Looper.getMainLooper()).postDelayed({
+            fullscreenToggle(true)
+        }, 3000)
     }
 
     private fun beginTransition(vg: ViewGroup) {
@@ -202,5 +219,33 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     fun gridClicked(place: Place) {
         gridDialog.dismiss()
         vm.gridClicked(place)
+    }
+
+    private fun shootPics() {
+        // hide details
+        binding.layDetails.visibility = View.INVISIBLE
+        binding.btnClear.visibility = View.INVISIBLE
+
+        // get screenshot
+        var bmp: Bitmap? = null
+        Instacapture.capture(cxt as Activity, object : SimpleScreenCapturingListener() {
+            override fun onCaptureComplete(bitmap: Bitmap) {
+                bmp = bitmap
+            }
+        })
+
+        // show dialog
+        Handler(Looper.getMainLooper()).post {
+            MaterialDialog(cxt).show {
+                customView(R.layout.dialog_pics_screenshot)
+                view.apply {
+                    val imageScreenshot = findViewById<AppCompatImageView>(R.id.img_screenshot)
+                        .apply { setImageBitmap(bmp) }
+                }
+            }
+        }
+
+        // return details
+        binding.layDetails.visibility = View.VISIBLE
     }
 }

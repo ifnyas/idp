@@ -8,11 +8,17 @@
     android:background="@color/grey_900"
     tools:background="@color/white">
 
-    <com.google.vr.sdk.widgets.pano.VrPanoramaView
-        android:id="@+id/img_place_image"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/lay_pano_helper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="invisible" />
+        android:layout_height="match_parent">
+
+        <com.google.vr.sdk.widgets.pano.VrPanoramaView
+            android:id="@+id/img_place_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="invisible" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_clear"
@@ -84,7 +90,8 @@
             style="@style/Material.Round.Borderless.Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="64dp"
             android:src="@drawable/ic_outline_arrow_back_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -127,7 +134,8 @@
             style="@style/Material.Round.Borderless.Dark"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="64dp"
             android:src="@drawable/ic_outline_shuffle_24"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />

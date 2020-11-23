@@ -1,16 +1,21 @@
 package app.ifnyas.idp.viewmodel
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Bitmap
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.ifnyas.idp.App
+import app.ifnyas.idp.App.Companion.cxt
+import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.api.ApiRequest
 import app.ifnyas.idp.model.Place
 import com.tarek360.instacapture.Instacapture
 import com.tarek360.instacapture.listener.SimpleScreenCapturingListener
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Suppress("MemberVisibilityCanBePrivate")
 class MainViewModel : ViewModel() {
@@ -72,10 +77,50 @@ class MainViewModel : ViewModel() {
     }
 
     fun shoot() {
-        Instacapture.capture(App.cxt as Activity, object : SimpleScreenCapturingListener() {
+        Instacapture.capture(cxt as Activity, object : SimpleScreenCapturingListener() {
             override fun onCaptureComplete(bitmap: Bitmap) {
                 screenshot.value = bitmap
             }
         })
+    }
+
+    fun share() {
+        viewModelScope.launch {
+            withContext(Dispatchers.IO) {
+                val query = place.value?.title
+                        ?.replace(",", "")
+                        ?.replace(" ", "+")
+
+                val text = "${place.value?.title}\n\n" +
+                        "https://www.google.com/maps/search/?api=1&query=$query"
+
+                val uri = fu.bmpToUri(screenshot.value)
+
+                val intent = Intent(Intent.ACTION_SEND).apply {
+                    flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    type = "image/png"
+                    putExtra(Intent.EXTRA_STREAM, uri)
+                    putExtra(Intent.EXTRA_TEXT, text)
+                }
+
+                cxt.startActivity(Intent.createChooser(intent, ""))
+            }
+        }
+    }
+
+    fun web() {
+        val uri = "https://www.google.com/search?q=${place.value?.title}"
+        val intentUri = Uri.parse(uri)
+        val intent = Intent(Intent.ACTION_VIEW, intentUri)
+        cxt.startActivity(intent)
+    }
+
+    fun maps() {
+        val uri = "geo:0,0?q=${place.value?.title}"
+        val intentUri = Uri.parse(uri)
+        val intent = Intent(Intent.ACTION_VIEW, intentUri).apply {
+            setPackage("com.google.android.apps.maps")
+        }
+        cxt.startActivity(intent)
     }
 }

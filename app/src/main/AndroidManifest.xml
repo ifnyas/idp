@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IDP">
         <activity android:name=".view.main.MainActivity" />
-        <activity android:name=".view.SplashActivity"
+        <activity
+            android:name=".view.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,6 +25,16 @@
             </intent-filter>
         </activity>
         <activity android:name=".view.debug.DebugActivity" />
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

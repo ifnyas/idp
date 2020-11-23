@@ -1,9 +1,8 @@
 package app.ifnyas.idp.view.main
 
-import android.content.Intent
+import android.app.Activity
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -34,6 +33,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.button.MaterialButton
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
 
 class PicsFragment : Fragment(R.layout.fragment_pics) {
@@ -76,37 +76,14 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
 
     private fun initBtn() {
         binding.apply {
-            btnClear.setOnClickListener {
-                fullscreenToggle(false)
-            }
-
-            btnBack.setOnClickListener {
-                activity?.onBackPressed()
-            }
-
-            btnFull.setOnClickListener {
-                fullscreenToggle(true)
-            }
-
-            btnRandom.setOnClickListener {
-                vm.randomize()
-            }
-
-            btnMap.setOnClickListener {
-                openMaps()
-            }
-
-            btnWeb.setOnClickListener {
-                openWeb()
-            }
-
-            btnGrid.setOnClickListener {
-                openGrid()
-            }
-
-            btnShoot.setOnClickListener {
-                shootPics()
-            }
+            btnClear.setOnClickListener { fullscreenToggle(false) }
+            btnBack.setOnClickListener { activity?.onBackPressed() }
+            btnFull.setOnClickListener { fullscreenToggle(true) }
+            btnRandom.setOnClickListener { vm.randomize() }
+            btnMap.setOnClickListener { vm.maps() }
+            btnWeb.setOnClickListener { vm.web() }
+            btnGrid.setOnClickListener { openGrid() }
+            btnShoot.setOnClickListener { shootPics() }
         }
     }
 
@@ -143,28 +120,28 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             // set image
             imgPlaceImage.apply {
                 Glide.with(this)
-                    .asBitmap().load(place?.image)
-                    .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
-                    .into(object : CustomTarget<Bitmap>() {
-                        override fun onLoadCleared(placeholder: Drawable?) {}
-                        override fun onResourceReady(
-                            resource: Bitmap, transition: Transition<in Bitmap>?
-                        ) {
-                            // set image
-                            val options = VrPanoramaView.Options().apply {
-                                inputType = VrPanoramaView.Options.TYPE_MONO
+                        .asBitmap().load(place?.image)
+                        .apply(RequestOptions().diskCacheStrategy(DiskCacheStrategy.ALL))
+                        .into(object : CustomTarget<Bitmap>() {
+                            override fun onLoadCleared(placeholder: Drawable?) {}
+                            override fun onResourceReady(
+                                    resource: Bitmap, transition: Transition<in Bitmap>?
+                            ) {
+                                // set image
+                                val options = VrPanoramaView.Options().apply {
+                                    inputType = VrPanoramaView.Options.TYPE_MONO
+                                }
+                                loadImageFromBitmap(resource, options)
+                                visibility = View.VISIBLE
+
+                                // set details
+                                textPlaceTitle.text = fu.htmlToString(place?.title ?: "")
+                                textPlaceDesc.text = fu.htmlToString(place?.desc ?: "")
+
+                                // end progress
+                                loadingToggle(false)
                             }
-                            loadImageFromBitmap(resource, options)
-                            visibility = View.VISIBLE
-
-                            // set details
-                            textPlaceTitle.text = fu.htmlToString(place?.title ?: "")
-                            textPlaceDesc.text = fu.htmlToString(place?.desc ?: "")
-
-                            // end progress
-                            loadingToggle(false)
-                        }
-                    })
+                        })
             }
         }
     }
@@ -183,22 +160,6 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
             layDetails.visibility = if (isLoading) View.GONE else View.VISIBLE
         }
-    }
-
-    private fun openMaps() {
-        val uri = "geo:0,0?q=${vm.place.value?.title}"
-        val intentUri = Uri.parse(uri)
-        val intent = Intent(Intent.ACTION_VIEW, intentUri).apply {
-            setPackage("com.google.android.apps.maps")
-        }
-        startActivity(intent)
-    }
-
-    private fun openWeb() {
-        val uri = "https://www.google.com/search?q=${vm.place.value?.title}"
-        val intentUri = Uri.parse(uri)
-        val intent = Intent(Intent.ACTION_VIEW, intentUri)
-        startActivity(intent)
     }
 
     private lateinit var gridDialog: MaterialDialog
@@ -226,25 +187,29 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
 
     private fun shootPics() {
         // hide details
-        binding.layDetails.visibility = View.INVISIBLE
-        binding.btnClear.visibility = View.INVISIBLE
+        (cxt as Activity).window.decorView.systemUiVisibility =
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
 
         // shoot
-        vm.shoot()
-
-        // return details
-        binding.layDetails.visibility = View.VISIBLE
+        Handler(Looper.getMainLooper()).postDelayed({
+            binding.layDetails.visibility = View.INVISIBLE
+            binding.btnClear.visibility = View.INVISIBLE
+            vm.shoot()
+            // return details
+            binding.layDetails.visibility = View.VISIBLE
+        }, 1000)
     }
 
     private fun createShareDialog(bmp: Bitmap) {
         MaterialDialog(cxt).show {
-            customView(
-                    R.layout.dialog_pics_screenshot,
-                    noVerticalPadding = true,
-                    horizontalPadding = true
-            )
+            customView(R.layout.dialog_pics_screenshot, noVerticalPadding = true)
             view.apply {
-                findViewById<AppCompatImageView>(R.id.img_screenshot).apply { setImageBitmap(bmp) }
+                val imgScreenshot = findViewById<AppCompatImageView>(R.id.img_screenshot)
+                val btnShare = findViewById<MaterialButton>(R.id.btn_share)
+                //val btnCopy = findViewById<MaterialButton>(R.id.btn_copy)
+
+                imgScreenshot.setImageBitmap(bmp)
+                btnShare.setOnClickListener { vm.share() }
             }
         }
     }

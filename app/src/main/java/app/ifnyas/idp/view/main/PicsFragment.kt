@@ -84,6 +84,7 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             btnWeb.setOnClickListener { vm.web() }
             btnGrid.setOnClickListener { openGrid() }
             btnShoot.setOnClickListener { shootPics() }
+            btnAbout.setOnClickListener { createAboutDialog() }
         }
     }
 
@@ -203,6 +204,7 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     private fun createShareDialog(bmp: Bitmap) {
         MaterialDialog(cxt).show {
             customView(R.layout.dialog_pics_screenshot, noVerticalPadding = true)
+            lifecycleOwner(viewLifecycleOwner)
             view.apply {
                 val imgScreenshot = findViewById<AppCompatImageView>(R.id.img_screenshot)
                 val btnShare = findViewById<MaterialButton>(R.id.btn_share)
@@ -212,6 +214,15 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
                 btnShare.setOnClickListener { vm.share() }
                 btnWallpaper.setOnClickListener { vm.wallpaper() }
             }
+        }
+    }
+
+    private fun createAboutDialog() {
+        MaterialDialog(cxt).show {
+            lifecycleOwner(viewLifecycleOwner)
+            title(text = "Indonesia Panorama")
+            message(text = "Seluruh aset foto 360 diambil dari www.indonesia.travel\n\nGit: https://github.com/ifnyas/idp")
+            positiveButton(text = "Kembali")
         }
     }
 }

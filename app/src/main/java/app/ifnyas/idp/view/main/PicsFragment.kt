@@ -206,10 +206,11 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
             view.apply {
                 val imgScreenshot = findViewById<AppCompatImageView>(R.id.img_screenshot)
                 val btnShare = findViewById<MaterialButton>(R.id.btn_share)
-                //val btnCopy = findViewById<MaterialButton>(R.id.btn_copy)
+                val btnWallpaper = findViewById<MaterialButton>(R.id.btn_wallpaper)
 
                 imgScreenshot.setImageBitmap(bmp)
                 btnShare.setOnClickListener { vm.share() }
+                btnWallpaper.setOnClickListener { vm.wallpaper() }
             }
         }
     }

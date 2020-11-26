@@ -1,9 +1,11 @@
 package app.ifnyas.idp.viewmodel
 
 import android.app.Activity
+import android.app.WallpaperManager
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -123,4 +125,12 @@ class MainViewModel : ViewModel() {
         }
         cxt.startActivity(intent)
     }
+
+    fun wallpaper() {
+        val bmp = screenshot.value
+        val wallpaperManager = WallpaperManager.getInstance(cxt)
+        wallpaperManager.setBitmap(bmp)
+        Toast.makeText(cxt, "Foto sukses dijadikan wallpaper!", Toast.LENGTH_SHORT).show()
+    }
+
 }

@@ -17,26 +17,26 @@
         android:layout_height="wrap_content">
 
         <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_copy"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Salin"
-            android:textColor="@color/grey_900"
-            app:icon="@drawable/ic_outline_content_copy_24"
-            app:iconGravity="textStart"
-            app:iconTint="@color/grey_900" />
-
-        <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_share"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_weight="1"
             android:text="Bagikan"
             android:textColor="@color/grey_900"
             app:icon="@drawable/ic_outline_share_24"
+            app:iconGravity="textStart"
+            app:iconTint="@color/grey_900" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_wallpaper"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:text="Wallpaper"
+            android:textColor="@color/grey_900"
+            app:icon="@drawable/ic_outline_wallpaper_24"
             app:iconGravity="textStart"
             app:iconTint="@color/grey_900" />
     </LinearLayout>

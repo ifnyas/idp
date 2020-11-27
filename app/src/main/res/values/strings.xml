@@ -5,4 +5,7 @@
     <string name="exhandler_msg">Terjadi kesalahan pada sistem</string>
 
     <string name="exWeb_msg">Terjadi kesalahan dalam memuat halaman, pastikan koneksi internet aktif</string>
+    <string name="about_title">Indonesia Panorama</string>
+    <string name="about_msg">Seluruh Aset 360 diambil dari www.indonesia.travel\n\nGit: https://github.com/ifnyas/idp</string>
+    <string name="text_back_dialog">Kembali</string>
 </resources>

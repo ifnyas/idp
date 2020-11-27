@@ -7,10 +7,11 @@ import io.ktor.client.features.json.serializer.*
 import io.ktor.client.features.logging.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.serialization.json.Json as kJson
 
 object ApiClient {
     val ktorClient: HttpClient = HttpClient {
-        install(JsonFeature) { serializer = KotlinxSerializer() }
+        install(JsonFeature) { serializer = KotlinxSerializer(kJson { ignoreUnknownKeys = true }) }
         install(Logging) {
             logger = Logger.DEFAULT
             level = LogLevel.ALL

@@ -8,5 +8,6 @@ data class Place(
         var desc: String? = "",
         var loc: String? = "",
         var image: String? = "",
-        var thumb: String? = ""
+        var thumb: String? = "",
+        var type: String? = ""
 )

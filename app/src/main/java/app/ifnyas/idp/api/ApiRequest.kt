@@ -32,9 +32,9 @@ class ApiRequest {
         }
     }
 
-    suspend fun getPlaces(): List<Place>? {
+    suspend fun getPlaces(type: String): List<Place>? {
         return try {
-            client.get<List<Place>>(path = "places")
+            client.get<List<Place>>(path = "places/$type")
         } catch (e: Exception) {
             exHandler(-1, e, null); null
         }

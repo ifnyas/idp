@@ -30,14 +30,22 @@ class MainViewModel : ViewModel() {
     val screenshot: MutableLiveData<Bitmap> by lazy { MutableLiveData<Bitmap>() }
 
     init {
-        initData()
+        visited.value = mutableListOf()
     }
 
-    private fun initData() {
+    fun initData(type: String) {
         viewModelScope.launch {
-            visited.value = mutableListOf()
-            places.value = ApiRequest().getPlaces()
+            places.value = ApiRequest().getPlaces(type)
             randomize()
+        }
+    }
+
+    fun clear() {
+        if (places.value?.isNotEmpty() == true) {
+            places.value = emptyList()
+            visited.value?.clear()
+            screenshot.value = null
+            place.value = null
         }
     }
 
@@ -86,17 +94,16 @@ class MainViewModel : ViewModel() {
         })
     }
 
-    fun share() {
+    fun share(title: String, bmp: Bitmap) {
         viewModelScope.launch {
             withContext(Dispatchers.IO) {
-                val query = place.value?.title
-                        ?.replace(",", "")
-                        ?.replace(" ", "+")
+                val query = title
+                        .replace(",", "")
+                        .replace(" ", "+")
 
-                val text = "${place.value?.title}\n\n" +
-                        "https://www.google.com/maps/search/?api=1&query=$query"
+                val text = "$title\nhttps://www.google.com/maps/search/?api=1&query=$query"
 
-                val uri = fu.bmpToUri(screenshot.value)
+                val uri = fu.bmpToUri(bmp)
 
                 val intent = Intent(Intent.ACTION_SEND).apply {
                     flags = Intent.FLAG_GRANT_READ_URI_PERMISSION
@@ -105,13 +112,13 @@ class MainViewModel : ViewModel() {
                     putExtra(Intent.EXTRA_TEXT, text)
                 }
 
-                cxt.startActivity(Intent.createChooser(intent, ""))
+                cxt.startActivity(Intent.createChooser(intent, "Bagikan via:"))
             }
         }
     }
 
     fun web() {
-        val uri = "https://www.google.com/search?q=${place.value?.title}"
+        val uri = "https://www.tripadvisor.com/search?q=${place.value?.title}"
         val intentUri = Uri.parse(uri)
         val intent = Intent(Intent.ACTION_VIEW, intentUri)
         cxt.startActivity(intent)
@@ -126,8 +133,7 @@ class MainViewModel : ViewModel() {
         cxt.startActivity(intent)
     }
 
-    fun wallpaper() {
-        val bmp = screenshot.value
+    fun wallpaper(bmp: Bitmap) {
         val wallpaperManager = WallpaperManager.getInstance(cxt)
         wallpaperManager.setBitmap(bmp)
         Toast.makeText(cxt, "Foto sukses dijadikan wallpaper!", Toast.LENGTH_SHORT).show()

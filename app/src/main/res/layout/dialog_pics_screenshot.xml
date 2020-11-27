@@ -3,7 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/text_title_dialog_pics_screenshot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+        tools:text="Moonlight Cafe, Bali" />
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/img_screenshot"
@@ -12,7 +22,7 @@
         android:layout_weight="1"
         android:scaleType="centerInside" />
 
-    <LinearLayout
+    <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -41,5 +51,5 @@
             app:icon="@drawable/ic_outline_wallpaper_24"
             app:iconGravity="textStart"
             app:iconTint="@color/grey_900" />
-    </LinearLayout>
+    </androidx.appcompat.widget.LinearLayoutCompat>
 </androidx.appcompat.widget.LinearLayoutCompat>

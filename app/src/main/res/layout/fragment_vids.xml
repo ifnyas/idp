@@ -26,7 +26,7 @@
         app:layout_constraintStart_toStartOf="parent"
         tools:visibility="gone" />
 
-    <ProgressBar
+    <androidx.core.widget.ContentLoadingProgressBar
         android:id="@+id/progress_bar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
         android:layout_height="match_parent"
         android:visibility="visible">
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_place_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -59,7 +59,7 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:text="Aling Aling, Bali" />
 
-        <TextView
+        <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/text_place_desc"
             android:layout_width="0dp"
             android:layout_height="wrap_content"

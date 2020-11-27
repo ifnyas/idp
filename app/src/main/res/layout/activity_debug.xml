@@ -5,9 +5,9 @@
     android:layout_height="match_parent"
     tools:context=".view.debug.DebugActivity">
 
-    <TextView
+    <androidx.appcompat.widget.AppCompatTextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center"
-        android:text="Hello!"/>
+        android:text="Hello!" />
 </androidx.constraintlayout.widget.ConstraintLayout>

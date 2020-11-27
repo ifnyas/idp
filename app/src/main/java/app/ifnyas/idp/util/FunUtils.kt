@@ -7,6 +7,7 @@ import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
+import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
@@ -74,7 +75,9 @@ class FunUtils {
                 val imgScreenshot = findViewById<AppCompatImageView>(R.id.img_screenshot)
                 val btnShare = findViewById<MaterialButton>(R.id.btn_share)
                 val btnWallpaper = findViewById<MaterialButton>(R.id.btn_wallpaper)
+                val textTitle = findViewById<AppCompatTextView>(R.id.text_title_dialog_pics_screenshot)
 
+                textTitle.text = title
                 imgScreenshot.setImageBitmap(bmp)
                 btnShare.setOnClickListener { MainViewModel().share(title, bmp) }
                 btnWallpaper.setOnClickListener { MainViewModel().wallpaper(bmp) }

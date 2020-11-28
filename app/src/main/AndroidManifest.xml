@@ -14,12 +14,14 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:screenOrientation="locked"
         android:theme="@style/Theme.IDP">
 
-        <activity android:name=".view.main.MainActivity" />
+        <activity
+            android:name=".view.main.MainActivity"
+            android:screenOrientation="locked" />
         <activity
             android:name=".view.SplashActivity"
+            android:screenOrientation="locked"
             android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".view.debug.DebugActivity" />
+        <activity
+            android:name=".view.debug.DebugActivity"
+            android:screenOrientation="locked" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

@@ -39,10 +39,10 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
             btnAbout.setOnClickListener { fu.createAboutDialog(this@VidsFragment) }
             btnGrid.setOnClickListener { openGrid() }
             btnFull.setOnClickListener { fullToggle(true) }
-            btnRandom.setOnClickListener { binding.vrVid.pauseRendering(); vm.randomize() }
+            btnRandom.setOnClickListener { vrVid.pauseVideo(); vm.randomize() }
             btnMaps.setOnClickListener { vm.maps() }
             btnWeb.setOnClickListener { vm.web() }
-            btnShoot.setOnClickListener { playToggle() }
+            btnShoot.setOnClickListener { playToggle(null) }
         }
     }
 
@@ -68,7 +68,6 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
             val uri = place?.image
             val options = VrVideoView.Options().apply { inputType = VrVideoView.Options.TYPE_MONO }
 
-            vrVid.resumeRendering()
             vrVid.loadVideo(Uri.parse(uri), options)
             vrVid.playVideo()
 
@@ -77,26 +76,28 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
             textPlaceDesc.text = fu.htmlToString(place?.desc ?: "")
             btnShoot.tag = R.drawable.ic_outline_play_arrow_24
 
+            // set play layout
+            playToggle(true)
+
             // end progress
-            playToggle()
             loadToggle(false)
         }
     }
 
-    private fun playToggle() {
+    private fun playToggle(isPlay: Boolean?) {
         binding.apply {
             fu.beginTransition(layRoot)
 
-            val isPlay = btnShoot.tag == R.drawable.ic_outline_play_arrow_24
-            vrVid.apply { if (isPlay) playVideo() else pauseVideo() }
+            val play = isPlay ?: (btnShoot.tag == R.drawable.ic_outline_play_arrow_24)
+            vrVid.apply { if (play) playVideo() else pauseVideo() }
 
             btnShoot.setImageResource(
-                    if (isPlay) R.drawable.ic_outline_pause_24
+                    if (play) R.drawable.ic_outline_pause_24
                     else R.drawable.ic_outline_play_arrow_24
             )
 
             btnShoot.tag =
-                    if (isPlay) R.drawable.ic_outline_pause_24
+                    if (play) R.drawable.ic_outline_pause_24
                     else R.drawable.ic_outline_play_arrow_24
         }
     }
@@ -104,6 +105,7 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
     fun gridClicked(place: Place) {
         gridDialog.dismiss()
         vm.gridClicked(place)
+        //activity?.recreate()
     }
 
     private fun loadToggle(isLoad: Boolean) {
@@ -136,16 +138,13 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
         super.onResume()
         binding.vrVid.resumeRendering()
         fu.cleanVrView()
-        playToggle()
     }
 
     override fun onPause() {
         super.onPause()
-        binding.vrVid.apply {
-            playToggle()
-            pauseVideo()
-            pauseRendering()
-        }
+        binding.vrVid.apply { pauseVideo(); pauseRendering() }
+        fullToggle(false)
+        playToggle(false)
     }
 
     override fun onDestroy() {

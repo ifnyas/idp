@@ -42,11 +42,11 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
 
     private fun initBtn() {
         binding.apply {
-            btnClear.setOnClickListener { fullscreenToggle(false) }
+            btnClear.setOnClickListener { fullToggle(false) }
             btnBack.setOnClickListener { activity?.onBackPressed() }
             btnAbout.setOnClickListener { fu.createAboutDialog(this@PicsFragment) }
             btnGrid.setOnClickListener { openGrid() }
-            btnFull.setOnClickListener { fullscreenToggle(true) }
+            btnFull.setOnClickListener { fullToggle(true) }
             btnRandom.setOnClickListener { vm.randomize() }
             btnMaps.setOnClickListener { vm.maps() }
             btnWeb.setOnClickListener { vm.web() }
@@ -109,7 +109,7 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
         }
     }
 
-    private fun fullscreenToggle(isFull: Boolean) {
+    private fun fullToggle(isFull: Boolean) {
         binding.apply {
             fu.beginTransition(layRoot)
             layDetails.visibility = if (isFull) View.GONE else View.VISIBLE
@@ -164,6 +164,7 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     override fun onPause() {
         super.onPause()
         binding.imgPlaceImage.pauseRendering()
+        fullToggle(false)
     }
 
     override fun onDestroy() {

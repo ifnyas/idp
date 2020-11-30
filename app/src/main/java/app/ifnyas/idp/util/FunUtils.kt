@@ -41,6 +41,18 @@ class FunUtils {
 
     private val TAG: String by lazy { javaClass.simpleName }
 
+
+    fun createExitDialog() {
+        MaterialDialog(cxt).show {
+            icon(R.drawable.ic_outline_explore_24)
+            title(R.string.exit_title)
+            positiveButton(text = "Keluar") {
+                (cxt as Activity).finishAffinity()
+            }
+            negativeButton(text = "Kembali")
+        }
+    }
+
     fun htmlToString(text: String): String {
         return HtmlCompat.fromHtml(text, HtmlCompat.FROM_HTML_MODE_COMPACT).toString()
     }

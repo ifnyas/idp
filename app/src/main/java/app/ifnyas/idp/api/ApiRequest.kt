@@ -39,4 +39,12 @@ class ApiRequest {
             exHandler(-1, e, null); null
         }
     }
+
+    suspend fun getThumb(type: String): String? {
+        return try {
+            client.get<String>(path = "places/$type/random/thumb")
+        } catch (e: Exception) {
+            exHandler(-1, e, null); null
+        }
+    }
 }

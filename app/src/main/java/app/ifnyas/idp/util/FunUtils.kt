@@ -41,6 +41,15 @@ class FunUtils {
 
     private val TAG: String by lazy { javaClass.simpleName }
 
+    fun createNetworkDialog() {
+        MaterialDialog(cxt).show {
+            lifecycleOwner()
+            icon(R.drawable.ic_outline_wifi_off_24)
+            title(R.string.no_network_title)
+            message(R.string.no_network_msg)
+            cancelable(false)
+        }
+    }
 
     fun createExitDialog() {
         MaterialDialog(cxt).show {

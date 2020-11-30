@@ -77,6 +77,7 @@ dependencies {
     implementation 'com.afollestad.material-dialogs:bottomsheets:3.3.0'
 
     implementation 'com.github.tarek360:instacapture:2.0.1'
+    implementation 'com.github.dasBikash84:android-network-monitor:1.5.0'
 
     testImplementation 'junit:junit:4.13.1'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'

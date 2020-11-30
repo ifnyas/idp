@@ -48,11 +48,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             vm.apply {
                 picsUrl.observe(viewLifecycleOwner, {
-                    setImage(binding.imgPics, it)
+                    it?.let { setImage(binding.imgPics, it) }
                 })
 
                 vidsUrl.observe(viewLifecycleOwner, {
-                    setImage(binding.imgVids, it)
+                    it?.let { setImage(binding.imgVids, it) }
                 })
             }
         }

@@ -44,7 +44,8 @@ class ApiRequest {
         return try {
             client.get<String>(path = "places/$type/random/thumb")
         } catch (e: Exception) {
-            exHandler(-1, e, null); null
+            null
+            //exHandler(-1, e, null); null
         }
     }
 }

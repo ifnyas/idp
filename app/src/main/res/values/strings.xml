@@ -9,7 +9,7 @@
     <string name="exit_title">Keluar dari ID Panorama?</string>
 
     <string name="about_title">Indonesia Panorama</string>
-    <string name="about_msg">Seluruh Aset 360 diambil dari www.indonesia.travel\n\nGit: https://github.com/ifnyas/idp</string>
+    <string name="about_msg">Seluruh Aset 360 diambil dari www.indonesia.travel</string>
 
     <string name="no_network_title">Tidak ada koneksi internet</string>
     <string name="no_network_msg">Peringatan akan hilang secara otomatis saat koneksi internet sudah aktif</string>

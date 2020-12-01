@@ -6,6 +6,7 @@ import android.content.pm.ApplicationInfo
 import androidx.appcompat.app.AppCompatDelegate
 import app.ifnyas.idp.util.FunUtils
 import com.facebook.stetho.Stetho
+import com.google.firebase.analytics.FirebaseAnalytics
 
 
 class App: Application() {
@@ -19,6 +20,7 @@ class App: Application() {
         // init val
         cxt = applicationContext
         fu = FunUtils()
+        fa = FirebaseAnalytics.getInstance(this)
 
         // init day/night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -35,5 +37,6 @@ class App: Application() {
     companion object {
         lateinit var cxt: Context
         lateinit var fu: FunUtils
+        lateinit var fa: FirebaseAnalytics
     }
 }

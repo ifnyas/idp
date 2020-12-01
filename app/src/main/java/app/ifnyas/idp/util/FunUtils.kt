@@ -72,7 +72,7 @@ class FunUtils {
 
     fun setFullScreen() {
         (cxt as Activity).window.decorView.systemUiVisibility =
-                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     fun createGridDialog(fragment: Fragment, places: List<Place>): MaterialDialog {
@@ -156,7 +156,7 @@ class FunUtils {
         fOut.apply { flush(); close() }
         file.setReadable(true, false)
         return FileProvider.getUriForFile(
-                cxt, "${BuildConfig.APPLICATION_ID}.provider", file
+            cxt, "${BuildConfig.APPLICATION_ID}.provider", file
         )
     }
 }

@@ -20,6 +20,13 @@
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
 
+-dontobfuscate
+-keepattributes SourceFile, LineNumberTable
+
+-keep public class * extends android.app.Application
+
+-keep class * extends androidx.fragment.app.Fragment{}
+
 -keep public class * implements com.bumptech.glide.module.GlideModule
 -keep class * extends com.bumptech.glide.module.AppGlideModule {
  <init>(...);

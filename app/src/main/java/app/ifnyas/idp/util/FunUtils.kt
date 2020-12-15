@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Environment
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
@@ -40,6 +41,8 @@ import java.io.FileOutputStream
 class FunUtils {
 
     private val TAG: String by lazy { javaClass.simpleName }
+
+    fun getPath(): String? = cxt.getExternalFilesDir(Environment.getDataDirectory().path)?.path
 
     fun createNetworkDialog() {
         MaterialDialog(cxt).show {

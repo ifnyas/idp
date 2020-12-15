@@ -5,6 +5,7 @@ import android.app.WallpaperManager
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,12 +13,25 @@ import androidx.lifecycle.viewModelScope
 import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.api.ApiRequest
+import app.ifnyas.idp.db.DbClient
 import app.ifnyas.idp.model.Place
+import app.ifnyas.idp.model.Places
+import app.ifnyas.idp.model.Places.desc
+import app.ifnyas.idp.model.Places.image
+import app.ifnyas.idp.model.Places.loc
+import app.ifnyas.idp.model.Places.thumb
+import app.ifnyas.idp.model.Places.title
+import app.ifnyas.idp.model.Places.type
 import com.tarek360.instacapture.Instacapture
 import com.tarek360.instacapture.listener.SimpleScreenCapturingListener
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.jetbrains.exposed.sql.SchemaUtils
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.experimental.newSuspendedTransaction
+import java.io.File
 
 @Suppress("MemberVisibilityCanBePrivate")
 class MainViewModel : ViewModel() {
@@ -31,11 +45,42 @@ class MainViewModel : ViewModel() {
 
     init {
         visited.value = mutableListOf()
+
+        // create db file
+        val file = File(fu.getPath(), "idp.mv.db")
+        try {
+            file.createNewFile()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
-    fun initData(type: String) {
+    fun initData(types: String) {
         viewModelScope.launch {
-            places.value = ApiRequest().getPlaces(type)
+            val list = ApiRequest().getPlaces(types)
+
+            newSuspendedTransaction(Dispatchers.IO, DbClient.db) {
+                Log.d(TAG, "AAAA: ${Places.selectAll().count()}")
+                //SchemaUtils.drop(Places)
+                SchemaUtils.create(Places)
+
+                list?.forEach { item ->
+                    Places.insert {
+                        it[title] = "${item.title}"
+                        it[desc] = "${item.desc}"
+                        it[loc] = "${item.loc}"
+                        it[thumb] = "${item.thumb}"
+                        it[type] = "${item.type}"
+                        it[image] = "${item.image}"
+                    }
+                }
+
+                Log.d(TAG, "BBBB: ${Places.selectAll().count()}")
+                places.postValue(Places.selectAll().map {
+                    Place(it[title], it[desc], it[loc], it[image], it[thumb], it[type])
+                })
+            }
+
             randomize()
         }
     }

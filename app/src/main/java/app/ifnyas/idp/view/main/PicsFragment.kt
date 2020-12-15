@@ -11,7 +11,9 @@ import androidx.fragment.app.activityViewModels
 import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.R
 import app.ifnyas.idp.databinding.FragmentPicsBinding
+import app.ifnyas.idp.db.DbClient
 import app.ifnyas.idp.model.Place
+import app.ifnyas.idp.model.Places
 import app.ifnyas.idp.util.viewBinding
 import app.ifnyas.idp.viewmodel.MainViewModel
 import com.afollestad.materialdialogs.MaterialDialog
@@ -21,6 +23,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.transactions.transaction
 
 class PicsFragment : Fragment(R.layout.fragment_pics) {
 
@@ -128,7 +132,19 @@ class PicsFragment : Fragment(R.layout.fragment_pics) {
     private lateinit var gridDialog: MaterialDialog
     private fun openGrid() {
         if (!::gridDialog.isInitialized) {
-            gridDialog = fu.createGridDialog(this, vm.places.value ?: emptyList())
+            val list = transaction(DbClient.db) {
+                Places.selectAll().map {
+                    Place(
+                        it[Places.title],
+                        it[Places.desc],
+                        it[Places.loc],
+                        it[Places.image],
+                        it[Places.thumb],
+                        it[Places.type]
+                    )
+                }
+            }
+            gridDialog = fu.createGridDialog(this, list)
         }
         gridDialog.show()
     }

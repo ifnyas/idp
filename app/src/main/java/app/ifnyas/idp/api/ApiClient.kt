@@ -10,15 +10,21 @@ import io.ktor.http.*
 import kotlinx.serialization.json.Json as kJson
 
 object ApiClient {
-    val ktorClient: HttpClient = HttpClient {
-        install(JsonFeature) { serializer = KotlinxSerializer(kJson { ignoreUnknownKeys = true }) }
-        install(Logging) {
-            logger = Logger.DEFAULT
-            level = LogLevel.ALL
-        }
-        defaultRequest {
-            host = "ifnyas-idp.builtwithdark.com/v1"
-            url { protocol = URLProtocol.HTTPS }
+    val ktorClient: HttpClient by lazy {
+        HttpClient {
+            install(JsonFeature) {
+                serializer = KotlinxSerializer(kJson { ignoreUnknownKeys = true })
+            }
+
+            install(Logging) {
+                logger = Logger.DEFAULT
+                level = LogLevel.ALL
+            }
+
+            defaultRequest {
+                host = "ifnyas-idp.builtwithdark.com/v1"
+                url { protocol = URLProtocol.HTTPS }
+            }
         }
     }
 }

@@ -48,11 +48,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             vm.apply {
                 picsUrl.observe(viewLifecycleOwner, {
-                    it?.let { setImage(binding.imgPics, it) }
+                    it?.let { setImage(imgPics, it) }
                 })
 
                 vidsUrl.observe(viewLifecycleOwner, {
-                    it?.let { setImage(binding.imgVids, it) }
+                    it?.let { setImage(imgVids, it) }
                 })
             }
         }
@@ -79,5 +79,4 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onResume()
         vm.thumbnails()
     }
-
 }

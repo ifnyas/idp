@@ -5,14 +5,15 @@ import android.os.Handler
 import android.os.Looper
 import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.R
-import app.ifnyas.idp.model.Place
+import app.ifnyas.idp.api.ApiClient.ktorClient
+import app.ifnyas.idp.model.PlaceModel
+import appifnyasidp.Place
 import com.afollestad.materialdialogs.MaterialDialog
 import io.ktor.client.request.*
 
 class ApiRequest {
 
     private val TAG: String by lazy { javaClass.simpleName }
-    private val client = ApiClient.ktorClient
 
     // exHandler
     private fun exHandler(c: Int?, e: Exception?, m: String?) {
@@ -32,20 +33,19 @@ class ApiRequest {
         }
     }
 
-    suspend fun getPlaces(type: String): List<Place>? {
+    suspend fun getPlaces(): List<Place>? {
         return try {
-            client.get<List<Place>>(path = "places/$type")
+            ktorClient
+                .use { it.get<List<PlaceModel>>(path = "places/all") }
+                .mapIndexed { index, item ->
+                    Place(
+                        index.toLong(),
+                        item.title, item.desc, item.loc,
+                        item.image, item.thumb, item.type
+                    )
+                }
         } catch (e: Exception) {
             exHandler(-1, e, null); null
-        }
-    }
-
-    suspend fun getThumb(type: String): String? {
-        return try {
-            client.get<String>(path = "places/$type/random/thumb")
-        } catch (e: Exception) {
-            null
-            //exHandler(-1, e, null); null
         }
     }
 }

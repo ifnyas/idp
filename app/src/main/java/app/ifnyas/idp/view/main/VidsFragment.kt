@@ -8,9 +8,9 @@ import androidx.fragment.app.activityViewModels
 import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.R
 import app.ifnyas.idp.databinding.FragmentVidsBinding
-import app.ifnyas.idp.model.Place
 import app.ifnyas.idp.util.viewBinding
 import app.ifnyas.idp.viewmodel.MainViewModel
+import appifnyasidp.Place
 import com.afollestad.materialdialogs.MaterialDialog
 import com.google.vr.sdk.widgets.video.VrVideoView
 
@@ -152,5 +152,3 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
         vm.clear()
     }
 }
-
-// TODO video not playing when change uri

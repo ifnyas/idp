@@ -15,4 +15,5 @@
     <string name="no_network_msg">Peringatan akan hilang secara otomatis saat koneksi internet sudah aktif</string>
 
     <string name="text_back_dialog">Kembali</string>
+    <string name="list_empty">Maaf, tidak ada data di server. Harap hubungi pengembang untuk lebih lanjut, terima kasih.</string>
 </resources>

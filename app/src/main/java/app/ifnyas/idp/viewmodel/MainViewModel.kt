@@ -10,9 +10,9 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.ifnyas.idp.App.Companion.cxt
+import app.ifnyas.idp.App.Companion.db
 import app.ifnyas.idp.App.Companion.fu
-import app.ifnyas.idp.api.ApiRequest
-import app.ifnyas.idp.model.Place
+import appifnyasidp.Place
 import com.tarek360.instacapture.Instacapture
 import com.tarek360.instacapture.listener.SimpleScreenCapturingListener
 import kotlinx.coroutines.Dispatchers
@@ -29,15 +29,10 @@ class MainViewModel : ViewModel() {
     val visited: MutableLiveData<MutableList<Int>> by lazy { MutableLiveData<MutableList<Int>>() }
     val screenshot: MutableLiveData<Bitmap> by lazy { MutableLiveData<Bitmap>() }
 
-    init {
-        visited.value = mutableListOf()
-    }
-
     fun initData(type: String) {
-        viewModelScope.launch {
-            places.value = ApiRequest().getPlaces(type)
-            randomize()
-        }
+        visited.value = mutableListOf()
+        places.value = db.mainQueries.selectAllByType(type).executeAsList()
+        randomize()
     }
 
     fun clear() {

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.net.Uri
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -19,11 +20,10 @@ import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.BuildConfig
 import app.ifnyas.idp.R
 import app.ifnyas.idp.adapter.VrGridAdapter
-import app.ifnyas.idp.model.Place
 import app.ifnyas.idp.view.main.MainActivity
 import app.ifnyas.idp.view.main.PicsFragment
-import app.ifnyas.idp.view.main.VidsFragment
 import app.ifnyas.idp.viewmodel.MainViewModel
+import appifnyasidp.Place
 import com.afollestad.materialdialogs.LayoutMode
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.bottomsheets.BottomSheet
@@ -51,9 +51,23 @@ class FunUtils {
         }
     }
 
+    fun createEmptyDialog() {
+        MaterialDialog(cxt).show {
+            cancelable(false)
+            icon(R.drawable.ic_outline_explore_24)
+            title(R.string.exhandler_title)
+            message(R.string.list_empty)
+            positiveButton(text = "Hubungi") {
+                Toast.makeText(cxt, "Terima kasih, pengembang berhasil dihubungi!", Toast.LENGTH_SHORT).show()
+                throw RuntimeException("Empty Places")
+            }
+            negativeButton(text = "Kembali")
+        }
+    }
+
     fun createExitDialog() {
         MaterialDialog(cxt).show {
-            icon(R.drawable.ic_outline_explore_24)
+            icon(R.drawable.ic_outline_clear_24)
             title(R.string.exit_title)
             positiveButton(text = "Keluar") {
                 (cxt as Activity).finishAffinity()
@@ -72,7 +86,7 @@ class FunUtils {
 
     fun setFullScreen() {
         (cxt as Activity).window.decorView.systemUiVisibility =
-            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
+                View.SYSTEM_UI_FLAG_HIDE_NAVIGATION or View.SYSTEM_UI_FLAG_FULLSCREEN
     }
 
     fun createGridDialog(fragment: Fragment, places: List<Place>): MaterialDialog {
@@ -123,7 +137,7 @@ class FunUtils {
         return try {
             rootLayout().findFragment<PicsFragment>().isVisible; true
         } catch (e: Exception) {
-            rootLayout().findFragment<VidsFragment>().isVisible; false
+            false
         }
     }
 
@@ -133,18 +147,10 @@ class FunUtils {
 
         // get base layout
         val view: ViewGroup? = rootLayout().findViewById(id)
-        if (isPicsFragment()) {
-            (view as VrPanoramaView).apply {
-                setInfoButtonEnabled(false)
-                setStereoModeButtonEnabled(false)
-                setFullscreenButtonEnabled(false)
-            }
-        } else {
-            (view as VrVideoView).apply {
-                setInfoButtonEnabled(false)
-                setStereoModeButtonEnabled(false)
-                setFullscreenButtonEnabled(false)
-            }
+        (if (isPicsFragment()) (view as VrPanoramaView) else (view as VrVideoView)).apply {
+            setInfoButtonEnabled(false)
+            setStereoModeButtonEnabled(false)
+            setFullscreenButtonEnabled(false)
         }
     }
 
@@ -156,7 +162,7 @@ class FunUtils {
         fOut.apply { flush(); close() }
         file.setReadable(true, false)
         return FileProvider.getUriForFile(
-            cxt, "${BuildConfig.APPLICATION_ID}.provider", file
+                cxt, "${BuildConfig.APPLICATION_ID}.provider", file
         )
     }
 }

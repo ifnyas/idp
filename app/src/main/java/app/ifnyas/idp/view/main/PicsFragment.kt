@@ -11,9 +11,9 @@ import androidx.fragment.app.activityViewModels
 import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.R
 import app.ifnyas.idp.databinding.FragmentPicsBinding
-import app.ifnyas.idp.model.Place
 import app.ifnyas.idp.util.viewBinding
 import app.ifnyas.idp.viewmodel.MainViewModel
+import appifnyasidp.Place
 import com.afollestad.materialdialogs.MaterialDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy

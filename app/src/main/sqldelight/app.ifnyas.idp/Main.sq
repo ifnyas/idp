@@ -1,0 +1,27 @@
+CREATE TABLE IF NOT EXISTS place (
+    id INTEGER PRIMARY KEY NOT NULL,
+    title TEXT UNIQUE NOT NULL,
+    desc TEXT,
+    loc TEXT,
+    image TEXT,
+    thumb TEXT,
+    type TEXT
+);
+
+insert:
+INSERT OR IGNORE INTO place(id, title, desc, loc, image, thumb, type)
+VALUES ?;
+
+selectAll:
+SELECT * FROM place;
+
+
+selectAllByType:
+SELECT * FROM place WHERE type = ?;
+
+deleteAll:
+DELETE FROM place;
+
+selectThumbRandom:
+SELECT thumb FROM place WHERE type = ? LIMIT 1
+OFFSET ABS(RANDOM()) % MAX((SELECT COUNT(*) FROM place WHERE type = ?), 1);

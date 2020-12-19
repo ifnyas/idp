@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.RecyclerView
 import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.App.Companion.fu
 import app.ifnyas.idp.R
-import app.ifnyas.idp.model.Place
 import app.ifnyas.idp.view.main.MainActivity
 import app.ifnyas.idp.view.main.PicsFragment
 import app.ifnyas.idp.view.main.VidsFragment
+import appifnyasidp.Place
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 

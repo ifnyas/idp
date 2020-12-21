@@ -14,12 +14,10 @@ import androidx.core.content.FileProvider
 import androidx.core.text.HtmlCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.findFragment
-import androidx.recyclerview.widget.RecyclerView
 import androidx.transition.TransitionManager
 import app.ifnyas.idp.App.Companion.cxt
 import app.ifnyas.idp.BuildConfig
 import app.ifnyas.idp.R
-import app.ifnyas.idp.adapter.VrGridAdapter
 import app.ifnyas.idp.view.main.MainActivity
 import app.ifnyas.idp.view.main.PicsFragment
 import app.ifnyas.idp.viewmodel.MainViewModel
@@ -33,6 +31,8 @@ import com.afollestad.materialdialogs.lifecycle.lifecycleOwner
 import com.google.android.material.button.MaterialButton
 import com.google.vr.sdk.widgets.pano.VrPanoramaView
 import com.google.vr.sdk.widgets.video.VrVideoView
+import com.otaliastudios.elements.Adapter
+import com.otaliastudios.elements.Source
 import java.io.File
 import java.io.FileOutputStream
 
@@ -95,9 +95,10 @@ class FunUtils {
             customView(R.layout.dialog_pics_grid, noVerticalPadding = true)
             setPeekHeight(R.layout.dialog_pics_grid)
             view.apply {
-                findViewById<RecyclerView>(R.id.rv_pics).apply {
-                    adapter = VrGridAdapter(places)
-                }
+                Adapter.builder(fragment.viewLifecycleOwner)
+                    .addSource(Source.fromList(places))
+                    .addPresenter(AdapterUtils().get(R.layout.item_pics_grid)!!)
+                    .into(findViewById(R.id.rv_pics))
             }
         }
     }

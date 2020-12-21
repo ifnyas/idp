@@ -127,9 +127,7 @@ class VidsFragment : Fragment(R.layout.fragment_vids) {
     private lateinit var gridDialog: MaterialDialog
     private fun openGrid() {
         if (!::gridDialog.isInitialized) {
-            gridDialog = fu.createGridDialog(
-                    this, vm.places.value ?: emptyList()
-            )
+            gridDialog = fu.createGridDialog(this, vm.places.value ?: emptyList())
         }
         gridDialog.show()
     }

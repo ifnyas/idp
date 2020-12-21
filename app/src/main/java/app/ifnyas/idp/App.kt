@@ -19,11 +19,11 @@ App : Application() {
     }
 
     private fun initFun() {
-        // init val
+        // init context
         cxt = applicationContext
-        db = Database(sqlDriver)
-        fu = FunUtils()
-        fa = FirebaseAnalytics.getInstance(this)
+
+        // init analytics
+        FirebaseAnalytics.getInstance(this)
 
         // init day/night mode
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
@@ -39,8 +39,7 @@ App : Application() {
 
     companion object {
         lateinit var cxt: Context
-        lateinit var db: Database
-        lateinit var fu: FunUtils
-        lateinit var fa: FirebaseAnalytics
+        val db: Database by lazy { Database(sqlDriver) }
+        val fu: FunUtils by lazy { FunUtils() }
     }
 }
